@@ -5,15 +5,52 @@ class Snake:
 
     def __init__(self, x, y):
         self.cells = [Cell(x, y)]
-        self.x = x
-        self.y = y
-
-    def addCell(self):
-        self.cells.append(Cell())
+        self.direction = 'LEFT'
 
     def draw(self, screen):
         for cell in self.cells:
             cell.draw(screen)
+
+    def grow(self, x, y):
+        self.cells.insert(0, Cell(x,y))
+
+    def move(self, new_direction):
+        if new_direction == 'UP' and self.direction != 'DOWN':
+            self.direction = 'UP'
+        if new_direction == 'DOWN' and self.direction != 'UP':
+            self.direction = 'DOWN'
+        if new_direction == 'LEFT' and self.direction != 'RIGHT':
+            self.direction = 'LEFT'
+        if new_direction == 'RIGHT' and self.direction != 'LEFT':
+            self.direction = 'RIGHT'
+
+        head = self.cells[0]
+        previousX = head.x
+        previousY = head.y
+
+        if self.direction == 'UP':
+            head.y -= Cell.height
+        elif self.direction == 'LEFT':
+            head.x -= Cell.width
+        elif self.direction == 'RIGHT':
+            head.x += Cell.width
+        elif self.direction == 'DOWN':
+            head.y += Cell.height
+
+        for cell in self.cells:
+            if cell == head:
+                continue
+            tempX = cell.x
+            tempY = cell.y
+            cell.x = previousX
+            cell.y = previousY
+            previousX = tempX
+            previousY = tempY
+
+
+
+
+
 
 
 
